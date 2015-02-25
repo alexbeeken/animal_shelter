@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="animalShelter" >
+  <head>
+    <title>Help! I'm trapped and I can't get out!</title>
+    <script src="lib/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="controllers/AnimalController.js"></script>
+    <script src="controllers/SpeciesController.js"></script>
+    <script src="services/AnimalFactory.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h3>Our Cozy Animal Shelter</h3>
+      <div class="col-md-12" ng-controller="AnimalCtrl">
+        <form class="form-inline" role="form" ng-submit="AnimalFactory.addAnimal()">
+          <input type="text" class="form-control input-sm" ng-model="AnimalFactory.animalName" class="form-control">
+          <button type="submit" class="btn btn-warning">Add Animal</button>
+        </form>
+
+        <div class="col-md-6">
+          <ul>
+            <li ng-repeat="item in animals">
+              <span ng-click="editing = true" ng-hide="editing">
+                {{item.name}}
+              </span>
+              <span ng-hide="editing">
+                <strong> <a ng-click="AnimalFactory.typeIsDog(item)">Dog</a> </strong>
+                <strong> <a ng-click="AnimalFactory.typeIsCat(item)">Cat</a> </strong>
+                <strong> <a ng-click="AnimalFactory.typeIsTurtle(item)">Turtles</a> </strong>
+              </span>
+              <span class="form-group" ng-show="editing" ng-submit="editing = false">
+                <form class="form-inline" role="form">
+                  <input type="text" class="form-control input-sm" ng-model="item.name" placeholder="item.name" required/>
+                  <button class="btn btn-success btn-sm" type="submit">Save</button>
+                </form>
+              </span>
+             </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6" ng-controller="SpeciesCtrl">
+        <div ng-show="dogs.length">
+          <h4>The Dogs</h4>
+          <ul>
+            <li ng-repeat="item in dogs = (animals | filter:{dog: true})">
+              {{item.name}}
+              <strong> <a ng-click="AnimalFactory.deleteAnimal(item)">Adopt</a> </strong>
+            </li>
+          </ul>
+      </div>
+        <div ng-show="cats.length">
+          <h4>The Cats</h4>
+          <ul>
+            <li ng-repeat="item in cats = (animals | filter:{cat: true})">
+              {{item.name}}
+              <strong> <a ng-click="AnimalFactory.deleteAnimal(item)">Adopt</a> </strong>
+            </li>
+          </ul>
+      </div>
+        <div ng-show="turtles.length">
+          <h4>The Turtles</h4>
+          <ul>
+            <li ng-repeat="item in turtles = (animals | filter:{turtle: true})">
+              {{item.name}}
+              <strong> <a ng-click="AnimalFactory.deleteAnimal(item)">Adopt</a> </strong>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </body>
+</html>
